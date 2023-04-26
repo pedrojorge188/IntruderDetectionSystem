@@ -1,0 +1,57 @@
+Classes:
+
+-> class sensor
+ - sensor de movimento
+ - sensor de som
+
+-> class alarme
+ - alarme silencioso
+ - alarme luzes
+ - alarme sirenes
+
+-> class camera
+ - camera de video
+
+-> class objeto?
+ - portões
+ - portas
+ - vidros
+
+-> class usuario
+ - segurança
+ - dono
+ - civis
+
+-> class ação-extra
+ - chamar policia
+ - chamar canil
+ - avisar dono
+
+-> class animal
+ - estimação
+ - selvagem
+
+
+Regras:
+
+    Se o sensor de movimento detectar movimento em uma área onde não deveria haver ninguém, ative o alarme de sirene.
+    Se o sensor de som detectar ruídos estranhos em uma área onde não deveria haver ninguém, ative o alarme silencioso.
+    Se o sensor de movimento detectar movimento em uma área monitorada enquanto o sistema está armado, envie uma mensagem para o segurança.
+    Se o sensor de movimento detectar movimento em uma área monitorada enquanto o sistema está armado, grave um vídeo da área com a câmera de vídeo.
+    Se a câmera de vídeo detectar uma pessoa não autorizada na área monitorada, ative o alarme de luzes para chamar a atenção da pessoa.
+    Se o sensor de movimento detectar movimento em uma área monitorada, mas o alarme de sirene já foi ativado nas últimas 5 minutos, ignore o evento para evitar alarmes falsos.
+    Se o sensor de som detectar ruídos estranhos em uma área monitorada, mas o alarme silencioso já foi ativado nas últimas 5 minutos, ignore o evento para evitar alarmes falsos.
+    Se o alarme de sirene for ativado, envie uma mensagem de texto para o segurança e para o dono da área monitorada.
+    Se o alarme de luzes for ativado, envie uma mensagem de texto para o segurança e para o dono da área monitorada.
+    Se o alarme silencioso for ativado, envie uma mensagem de texto para o segurança e para o dono da área monitorada.
+    Se a câmera de vídeo detectar uma pessoa não autorizada na área monitorada, inicie a gravação de vídeo e envie um alerta para o segurança.
+    Se o sensor de movimento detectar movimento em uma área monitorada, mas a pessoa detectada for um usuário autorizado, ignore o evento.
+    Se a pessoa detectada pelo sensor de movimento for um animal de estimação, ignore o evento.
+    Se o sensor de som detectar um som causado por uma falha no sistema de detecção de intrusos, ignore o evento.
+    Se a porta da área monitorada for aberta por um usuário autorizado, desarme o sistema de detecção de intrusos temporariamente.
+    Se a porta da área monitorada for aberta por uma pessoa não autorizada, ative o alarme de luzes para chamar a atenção da pessoa.
+    Se o sistema de detecção de intrusos for desarmado pelo dono da área monitorada, envie uma mensagem de texto para o segurança informando sobre a situação.
+    Se a área monitorada for invadida por um grupo de pessoas, ative o alarme de sirene e chame a polícia.
+    Se a área monitorada for invadida por um animal selvagem, chame o canil para lidar com a situação.
+    Se o alarme de sirene for ativado, envie uma mensagem para o dono da área monitorada com a opção de desarmar o sistema de detecção de intrusos ou chamar a polícia.
+

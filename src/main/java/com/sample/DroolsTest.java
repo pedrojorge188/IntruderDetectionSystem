@@ -56,5 +56,6 @@ public class DroolsTest {
         } catch (Throwable t) {
             t.printStackTrace();
         }
+    }
 
 }

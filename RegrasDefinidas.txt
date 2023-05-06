@@ -1,0 +1,34 @@
+Regra 1 : 
+	rule "Se há alguem fora de casa, ligar camera"
+		prioridade ...
+		se
+		  Analisa divisão && divisão = Jardim
+ 		  Existe Outsider no jardim
+              Existe sensor no jardim
+		  A camera está desligada
+		então
+		  Ligar a camera
+		  Cria CallAction "Monitorização Exterior"
+		  Mostra "Camara Ligada, Possivel intruso no exterior"
+ 	end
+
+Regra 2 : 
+	rule "Se não há niguem na rua, desliga camera"
+		prioridade ...
+		se 
+		   Analisa divisão && divisao = Jardim 
+               Existe sensor no jardim
+		   Não Exite outsider no jardim
+		   Verifica callAction "Monitorização Exterior" (isConcluded == false)
+		   A camera esta ligada
+		entao
+			Desligar a camera
+			remover callAction (setConcluded == true)
+		   	Mostra "Camera Desligada, Ninguem no jardim"
+       end
+
+Regra 3:
+     rule "Alguem armado no jardim, avisar segurança"
+	    prioridade ...
+          se 
+		

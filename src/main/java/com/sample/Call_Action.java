@@ -7,7 +7,7 @@ public class Call_Action {
 	
 	public Call_Action(String action, boolean concluded) {
 		this.action = action;
-		this.concluded = concluded;
+
 	}
 
 	public String getAction() {

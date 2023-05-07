@@ -1,0 +1,8 @@
+HouseSection?;Animal?;Collar?;Camera?;Outsider?;Armed*;Owner?;Security?;Sensor?
+Cozinha;sim;sim;sim;nao; ;nao;nao;sim
+Sala;nao;nao;nao;nao; ;nao;nao;sim
+Quarto 1;sim;nao;nao;nao; ;sim;nao;nao
+Quarto 2;nao;nao;nao;sim;sim;nao;nao;sim
+Jardim Traseiro;nao;nao;sim;sim;sim;nao;nao;sim
+Piscina;nao;nao;sim;nao; ;nao;sim;sim
+Jardim Frente;nao;nao;sim;nao; ;nao;sim;sim

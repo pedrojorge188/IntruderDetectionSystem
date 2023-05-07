@@ -1,5 +1,8 @@
 package com.sample;
 
+import java.io.FileInputStream;
+import java.util.Scanner;
+
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -13,38 +16,68 @@ public class DroolsTest {
 	        KieServices ks = KieServices.Factory.get();
     	    KieContainer kContainer = ks.getKieClasspathContainer();
         	KieSession kSession = kContainer.newKieSession("ksession-rules");
+        	
+        	//Pergunta numero de telefone e numero do contrato do Dono
+        	Scanner palavra = new Scanner(System.in, "ISO-8859-1");
+        	
+        	System.out.println("Numero do Contrato: ");
+            String Contrato = "123";	//palavra.nextLine();
+            System.out.println("Numero de telefone: ");
+            String Telefone = "961726421";	//palavra.nextLine();
 
-        	/*// Cria os objetos Paciente e Sintoma        	
-        	Paciente P1 = new Paciente("001","Ana Melo",12,"");
-        	Paciente P2 = new Paciente("002","Rui Costa",13,"");
-        	Paciente P3 = new Paciente("003","Joana Martins",85,"");
-        	Paciente P4 = new Paciente("004","Pedro Torres",53,"");
-        	Paciente P5 = new Paciente("005","Ana Gomes",93,"");
+        	// Cria os objetos      	
+        	Scanner ler = new Scanner(new FileInputStream("Objects1.txt"));
+        	String linha = ler.nextLine();
         	
-        	Sintoma S1 = new Sintoma("001", "febre");
-        	Sintoma S2 = new Sintoma("001", "manchas");
-        	Sintoma S3 = new Sintoma("002", "febre");
-        	Sintoma S4 = new Sintoma("003", "febre");
-        	Sintoma S5 = new Sintoma("003", "dores");
-        	Sintoma S6 = new Sintoma("004", "febre");
-        	Sintoma S7 = new Sintoma("004", "dores");
-        	Sintoma S8 = new Sintoma("004", "manchas");
-        	
-        	// Insere os objetos na sessão do Drools
-        	kSession.insert(P1);
-        	kSession.insert(P2);
-        	kSession.insert(P3);
-        	kSession.insert(P4);
-        	kSession.insert(P5);
-        	
-        	kSession.insert(S1);
-        	kSession.insert(S2);
-        	kSession.insert(S3);
-        	kSession.insert(S4);
-        	kSession.insert(S5);
-        	kSession.insert(S6);
-        	kSession.insert(S7);
-        	kSession.insert(S8);*/
+        	while(ler.hasNextLine()) {
+        		linha = ler.nextLine();
+        		String [] temp = linha.split(";");
+        		
+        		HouseSection hs = new HouseSection(temp[0]);
+        		
+        		kSession.insert(hs);
+        		
+        		if(temp[1].equals("sim")) {
+        			Animal an = new Animal(hs);
+        			kSession.insert(an);
+        			
+	        		if(temp[2].equals("sim")) {
+	        			Collar cl = new Collar(an);
+	        			kSession.insert(cl);
+	        		}
+        		}
+        		
+        		if(temp[3].equals("sim")) {
+        			Camera cm = new Camera(false, hs);
+        			kSession.insert(cm);
+        		}
+        		
+        		if(temp[4].equals("sim")) {
+        			if(temp[5].equals("sim")) {
+        				Outsider out = new Outsider(hs, true);
+        				kSession.insert(out);
+        			}
+        			else {
+        				Outsider out = new Outsider(hs, false);
+        				kSession.insert(out);
+        			}
+        		}
+        		
+        		if(temp[6].equals("sim")) {
+        			Owner ow = new Owner(hs, Telefone, Contrato);
+        			kSession.insert(ow);
+        		}
+        		
+        		if(temp[7].equals("sim")) {
+        			Security sec = new Security(hs, false);
+        			kSession.insert(sec);
+        		}
+        		
+        		if(temp[8].equals("sim")) {
+        			Sensor sen = new Sensor(true, hs);
+        			kSession.insert(sen);
+        		}
+        	}
         	
         	// Dispara as regras
         	kSession.fireAllRules();

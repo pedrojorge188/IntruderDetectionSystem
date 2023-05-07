@@ -5,8 +5,8 @@ public class Owner extends Person {
 	private String telefone;
 	private String contract;
 	
-	public Owner(String nome, HouseSection houseSection, String telefone, String contract) {
-		super(nome, houseSection);
+	public Owner(HouseSection houseSection, String telefone, String contract) {
+		super(houseSection);
 		this.telefone = telefone;
 		this.contract = contract;
 	}

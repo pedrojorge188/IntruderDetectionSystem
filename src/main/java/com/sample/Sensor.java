@@ -2,22 +2,12 @@ package com.sample;
 
 public class Sensor {
 	
-	private String type;
 	private boolean connected;
 	private HouseSection houseSection;
 	
-	public Sensor(String type, boolean connected, HouseSection houseSection) {
-		this.type = type;
+	public Sensor(boolean connected, HouseSection houseSection) {
 		this.connected = connected;
 		this.houseSection = houseSection;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public boolean isConnected() {

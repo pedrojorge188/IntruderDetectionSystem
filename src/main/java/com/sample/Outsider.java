@@ -4,8 +4,8 @@ public class Outsider extends Person{
 	
 	private boolean armed;
 
-	public Outsider(String nome, HouseSection houseSection, boolean armed) {
-		super(nome, houseSection);
+	public Outsider(HouseSection houseSection, boolean armed) {
+		super(houseSection);
 		this.armed = armed;
 	}
 

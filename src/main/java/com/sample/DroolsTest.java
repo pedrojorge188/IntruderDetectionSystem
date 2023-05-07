@@ -7,11 +7,11 @@ import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
-
 public class DroolsTest {
 
     public static final void main(String[] args) {
     	try {
+    		
             // load up the knowledge base
 	        KieServices ks = KieServices.Factory.get();
     	    KieContainer kContainer = ks.getKieClasspathContainer();
@@ -20,9 +20,9 @@ public class DroolsTest {
         	//Pergunta numero de telefone e numero do contrato do Dono
         	Scanner palavra = new Scanner(System.in, "ISO-8859-1");
         	
-        	System.out.println("Numero do Contrato: ");
+        	//System.out.println("Numero do Contrato: ");
             String Contrato = "123";	//palavra.nextLine();
-            System.out.println("Numero de telefone: ");
+            //System.out.println("Numero de telefone: ");
             String Telefone = "961726421";	//palavra.nextLine();
 
         	// Cria os objetos      	
@@ -48,7 +48,7 @@ public class DroolsTest {
         		}
         		
         		if(temp[3].equals("sim")) {
-        			Camera cm = new Camera(false, hs);
+        			Camera cm = new Camera(true, hs);
         			kSession.insert(cm);
         		}
         		
@@ -68,12 +68,8 @@ public class DroolsTest {
         			kSession.insert(ow);
         		}
         		
-        		if(temp[7].equals("sim")) {
-        			Security sec = new Security(hs, false);
-        			kSession.insert(sec);
-        		}
         		
-        		if(temp[8].equals("sim")) {
+        		if(temp[7].equals("sim")) {
         			Sensor sen = new Sensor(true, hs);
         			kSession.insert(sen);
         		}

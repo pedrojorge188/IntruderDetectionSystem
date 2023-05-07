@@ -2,7 +2,7 @@ package com.sample;
 
 public abstract class Person {
 	
-	private HouseSection houseSection;
+	protected HouseSection houseSection;
 	
 	public Person(HouseSection houseSection) {
 		this.houseSection = houseSection;

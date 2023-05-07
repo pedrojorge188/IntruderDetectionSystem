@@ -1,3 +1,35 @@
 package com.sample.rules
- 
+import com.sample.*;
 
+rule "Liga alarme se alguem avistado"
+salience 100
+	when
+		$hs: HouseSection()
+		$s: Camera(houseSection == $hs, connected == true)
+		not Alarm()
+		exists Outsider(houseSection == $hs)
+	then
+		insert(new Alarm());
+		System.out.println("Intruso avistado na divisao "+$hs.getSection());
+	
+end
+
+rule "Alarm Ligado"
+salience 99
+	when
+		exists Alarm()
+	then
+		System.out.println("Alarme Ligado");
+end
+
+/*
+rule "Tudo controlado"
+salience 1
+	when
+		not Alarme()
+		exists Camera(connected == false)
+		exists Sensor(connected == false)
+	then
+		System.out.println("Tudo controlado");
+end
+*/	

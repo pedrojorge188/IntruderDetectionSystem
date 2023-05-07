@@ -1,2 +1,2 @@
 HouseSection?;Animal?;Collar?;Camera?;Outsider?;Armed*;Owner?;Sensor?
-Cozinha;nao; ;sim;sim;nao;nao;sim;
+Cozinha;nao; ;sim;nao;sim;nao;sim;

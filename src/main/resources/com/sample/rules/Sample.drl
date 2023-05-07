@@ -11,25 +11,30 @@ salience 100
 	then
 		insert(new Alarm());
 		System.out.println("Intruso avistado na divisao "+$hs.getSection());
+		System.out.println("Alarme Ligado");
 	
 end
 
-rule "Alarm Ligado"
-salience 99
+
+rule "Chama segurança se alguem armado"
+salience 98
 	when
-		exists Alarm()
+		$hs: HouseSection()
+		$s: Camera(houseSection == $hs, connected == true)
+		exists Outsider(houseSection == $hs, armed == true)
 	then
-		System.out.println("Alarme Ligado");
+		insert(new Security($hs));
+		System.out.println("Intruso armado avistado na divisao "+$hs.getSection());	
 end
 
-/*
+
+
 rule "Tudo controlado"
 salience 1
 	when
-		not Alarme()
-		exists Camera(connected == false)
-		exists Sensor(connected == false)
+		not Alarm()
+		//exists Camera(connected == false)
+		//exists Sensor(connected == false)
 	then
 		System.out.println("Tudo controlado");
 end
-*/	

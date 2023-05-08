@@ -1,10 +1,11 @@
 package com.sample;
 
-public abstract class Person {
+public class Police {
 	
-	protected HouseSection houseSection;
-	
-	public Person(HouseSection houseSection) {
+	private HouseSection houseSection;
+
+	public Police(HouseSection houseSection) {
+		super();
 		this.houseSection = houseSection;
 	}
 
@@ -15,5 +16,4 @@ public abstract class Person {
 	public void setHouseSection(HouseSection houseSection) {
 		this.houseSection = houseSection;
 	}
-	
 }

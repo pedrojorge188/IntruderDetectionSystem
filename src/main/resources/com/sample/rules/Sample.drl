@@ -1,40 +1,261 @@
 package com.sample.rules
 import com.sample.*;
 
-rule "Liga alarme se alguem avistado"
+
+rule "Se Sensor desligado, liga-o"
 salience 100
 	when
 		$hs: HouseSection()
-		$s: Camera(houseSection == $hs, connected == true)
-		not Alarm()
-		exists Outsider(houseSection == $hs)
+		not Owner(houseSection == $hs)
+		not Police(houseSection == $hs)
+		not Protocol()
+
+		$se: Sensor(houseSection == $hs, connected == false)
 	then
-		insert(new Alarm());
-		System.out.println("Intruso avistado na divisao "+$hs.getSection());
-		System.out.println("Alarme Ligado");
-	
+		$se.setConnected(true);
+	    update($se);
+	    
+		System.out.println("Sensor em " + $hs.getSection() + " ligado!");
 end
 
 
-rule "Chama segurança se alguem armado"
+rule "Se Camera sem Sensor, liga Camera"
+salience 99
+	when
+		$hs: HouseSection()
+		not Owner(houseSection == $hs)
+		not Police(houseSection == $hs)
+		not Protocol()
+		
+		not Sensor(houseSection == $hs)
+		$cm: Camera(houseSection == $hs, connected == false)
+	then
+		$cm.setConnected(true);
+	    update($cm);
+	    
+		System.out.println("Camera em " + $hs.getSection() + " ligada!");
+end
+
+
+rule "Se Sensor ligado com Camera ligada, desliga Camera"
 salience 98
 	when
 		$hs: HouseSection()
-		$s: Camera(houseSection == $hs, connected == true)
-		exists Outsider(houseSection == $hs, armed == true)
+		not Owner(houseSection == $hs)
+		not Police(houseSection == $hs)
+		not Protocol()
+		
+		$se: Sensor(houseSection == $hs, connected == true)
+		$cm: Camera(houseSection == $hs, connected == true)
 	then
-		insert(new Security($hs));
-		System.out.println("Intruso armado avistado na divisao "+$hs.getSection());	
+		$cm.setConnected(false);
+	    update($cm);
+	    
+		System.out.println("Camera em " + $hs.getSection() + " desligada!");
+end
+
+//-----------------------------Requesitos Inicias----------------------------//
+
+rule "Sensor detetou coleira"
+salience 80
+	when
+		$hs: HouseSection()
+		not Owner(houseSection == $hs)
+		not Police(houseSection == $hs)
+		
+		exists Sensor(houseSection == $hs, connected == true)
+		
+		$an: Animal(houseSection == $hs)
+		exists Collar(animal == $an)
+		
+	then
+		retract($an);
+		System.out.println("Animal domestico em " + $hs.getSection() + " ignorado pelo sistema");
 end
 
 
+rule "Sensor, detetou algo"
+salience 79
+	when
+		$hs: HouseSection()
+		//not Owner(houseSection == $hs)
+		//not Police(houseSection == $hs)
+		
+		exists Sensor(houseSection == $hs, connected == true)
+		
+		exists Animal(houseSection == $hs) or Outsider(houseSection == $hs)
+		
+	then
+		insertLogical(new Protocol());
+	    
+		System.out.println("Detetado algo em " + $hs.getSection());
+		System.out.println("Protocolo acionado");
+end
+
+
+rule "Sensor, com camera desligada, detetou algo"
+salience 78
+	when
+		$hs: HouseSection()
+		//not Owner(houseSection == $hs)
+		//not Police(houseSection == $hs)
+		
+		$cm: Camera(houseSection == $hs, connected == false)
+		exists Sensor(houseSection == $hs, connected == true)
+		
+		exists Animal(houseSection == $hs) or Outsider(houseSection == $hs)
+		
+	then
+		//insertLogical(new Protocol());
+		
+		$cm.setConnected(true);
+	    update($cm);
+	    
+		System.out.println("Detetado algo em " + $hs.getSection());
+		//System.out.println("Protocolo acionado");
+		System.out.println("Camera ligada em " + $hs.getSection());
+end
+
+
+rule "Sensor, sem camera, detetou algo"
+salience 77
+	when
+		$hs: HouseSection()
+		//not Owner(houseSection == $hs)
+		//not Police(houseSection == $hs)
+		
+		not Camera(houseSection == $hs)
+		exists Sensor(houseSection == $hs, connected == true)
+		
+		exists Animal(houseSection == $hs) or Outsider(houseSection == $hs)
+		
+	then
+		insertLogical(new Owner($hs));
+		//insertLogical(new Protocol());
+		System.out.println("Detetado algo em " + $hs.getSection());
+		//System.out.println("Protocolo acionado");
+		System.out.println("Owner chamado em " + $hs.getSection());
+end
+
+//----------------------Sensores---------------------------------//
+
+rule "Camera, detetou animal"
+salience 60
+	when
+		$hs: HouseSection()
+		//not Owner(houseSection == $hs)
+		not Police(houseSection == $hs)
+		
+		exists Camera(houseSection == $hs, connected == true)
+		
+		$an: Animal(houseSection == $hs)
+		
+	then
+		insertLogical(new Owner($hs));
+		//insertLogical(new Protocol());
+		System.out.println("Detetado animal em " + $hs.getSection());
+		//System.out.println("Protocolo acionado");
+		System.out.println("Owner chamado em " + $hs.getSection());
+end
+
+
+rule "Camera, detetou intruso"
+salience 59
+	when
+		$hs: HouseSection()
+		not Owner(houseSection == $hs)
+		//not Police(houseSection == $hs)
+		
+		exists Camera(houseSection == $hs, connected == true)
+		
+		$out: Outsider(houseSection == $hs)
+		
+	then
+		insertLogical(new Police($hs));
+		//insertLogical(new Protocol());
+		System.out.println("Detetado intruso em " + $hs.getSection());
+		//System.out.println("Protocolo acionado");
+		System.out.println("Policia chamada em " + $hs.getSection());
+end
+
+//------------------------Cameras------------------------------//
+
+rule "Dono encontra animal domestico"
+salience 40
+	when
+		$hs: HouseSection()
+		not Police(houseSection == $hs)
+		
+		$ow: Owner(houseSection == $hs)
+		
+		$an: Animal(houseSection == $hs)
+		exists Collar(animal == $an)
+		
+	then
+		retract($an);
+		System.out.println("Dono retirou animal domestico em " + $hs.getSection());
+end
+
+
+rule "Dono encontra animal selvagem"
+salience 39
+	when
+		$hs: HouseSection()
+		not Police(houseSection == $hs)
+		
+		$ow: Owner(houseSection == $hs)
+		
+		$an: Animal(houseSection == $hs)
+		not Collar(animal == $an)
+		
+	then
+		retract($an);
+		System.out.println("Dono retirou animal selvagem em " + $hs.getSection());
+end
+
+
+rule "Dono encontra intruso"
+salience 38
+	when
+		$hs: HouseSection()
+		//not Police(houseSection == $hs)
+		
+		$ow: Owner(houseSection == $hs)
+		
+		$out: Outsider(houseSection == $hs)
+		
+	then
+		insertLogical(new Police($hs));
+		System.out.println("Dono encontrou intruso em " + $hs.getSection());
+		System.out.println("Policia chamada em " + $hs.getSection());
+end
+
+//---------------------------------Dono--------------------------------//
+
+rule "Policia encontra intruso"
+salience 20
+	when
+		$hs: HouseSection()
+		$po: Police(houseSection == $hs)
+		
+		$out: Outsider(houseSection == $hs)
+		
+	then
+		retract($out)
+		System.out.println("Policia retirou intruso em " + $hs.getSection());
+end
+
+//---------------------------Policia--------------------------------------//
+//---------------------------Tudo ok---------------------------------------//
 
 rule "Tudo controlado"
 salience 1
 	when
-		not Alarm()
-		//exists Camera(connected == false)
-		//exists Sensor(connected == false)
+		not Owner()
+		not Police()
+		not Protocol()
 	then
 		System.out.println("Tudo controlado");
 end
+
+

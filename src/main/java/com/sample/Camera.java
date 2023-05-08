@@ -6,7 +6,6 @@ public class Camera {
 	private HouseSection houseSection;
 	
 	public Camera(boolean connected, HouseSection houseSection) {
-		super();
 		this.connected = connected;
 		this.houseSection = houseSection;
 	}

@@ -17,13 +17,15 @@ public class DroolsTest {
     	    KieContainer kContainer = ks.getKieClasspathContainer();
         	KieSession kSession = kContainer.newKieSession("ksession-rules");
         	
-        	//Pergunta numero de telefone e numero do contrato do Dono
+        	/*//Pergunta numero de telefone e numero do contrato do Dono
         	Scanner palavra = new Scanner(System.in, "ISO-8859-1");
         	
         	//System.out.println("Numero do Contrato: ");
             String Contrato = "123";	//palavra.nextLine();
             //System.out.println("Numero de telefone: ");
             String Telefone = "961726421";	//palavra.nextLine();
+			Owner ow = new Owner(null, Telefone, Contrato);
+			kSession.insert(ow);*/
 
         	// Cria os objetos      	
         	Scanner ler = new Scanner(new FileInputStream("Objects1.txt"));
@@ -48,29 +50,17 @@ public class DroolsTest {
         		}
         		
         		if(temp[3].equals("sim")) {
-        			Camera cm = new Camera(true, hs);
+        			Camera cm = new Camera(false, hs);
         			kSession.insert(cm);
         		}
         		
         		if(temp[4].equals("sim")) {
-        			if(temp[5].equals("sim")) {
-        				Outsider out = new Outsider(hs, true);
-        				kSession.insert(out);
-        			}
-        			else {
-        				Outsider out = new Outsider(hs, false);
-        				kSession.insert(out);
-        			}
+    				Outsider out = new Outsider(hs, true);
+    				kSession.insert(out);
         		}
         		
-        		if(temp[6].equals("sim")) {
-        			Owner ow = new Owner(hs, Telefone, Contrato);
-        			kSession.insert(ow);
-        		}
-        		
-        		
-        		if(temp[7].equals("sim")) {
-        			Sensor sen = new Sensor(true, hs);
+        		if(temp[5].equals("sim")) {
+        			Sensor sen = new Sensor(false, hs);
         			kSession.insert(sen);
         		}
         	}
